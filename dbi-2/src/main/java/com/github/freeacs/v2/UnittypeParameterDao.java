@@ -15,7 +15,7 @@ public class UnittypeParameterDao {
 
     private static final String INSERT_SQL = "insert into unit_type_param(name, flags, unit_type_id) values(?, ?, ?)";
     private static final String UPDATE_SQL = "update unit_type_param set name = ?, flags = ?, unit_type_id = ? where unit_type_param_id = ?";
-    private static final String READ_ALL_SQL = "select unit_type_param_id, name, flags, unit_type_id from unit_type_param where unit_type_id = ?";
+    private static final String READ_ALL_SQL = "select unit_type_param_id, name, flags, unit_type_id from unit_type_param";
     private static final String DELETE_ALL_SQL = "delete from unit_type_param where unit_type_id = ?";
 
     private final JdbcTemplate jdbcTemplate;
@@ -33,18 +33,15 @@ public class UnittypeParameterDao {
         return unittypeParameter;
     }
 
-    public void deleteAll(Long unittypeId) {
+    public void delete(Long unittypeId) {
         if (unittypeId == null) {
             throw new IllegalArgumentException("Cannot delete unittype parameters with no unittype id");
         }
         jdbcTemplate.update(DELETE_ALL_SQL, unittypeId);
     }
 
-    public List<UnittypeParameter> readAll(Long unittypeId) {
-        if (unittypeId == null) {
-            throw new IllegalArgumentException("Cannot read unittype parameters with no unittype id");
-        }
-        return jdbcTemplate.query(READ_ALL_SQL, new Object[]{unittypeId}, getRowMapper());
+    public List<UnittypeParameter> readAll() {
+        return jdbcTemplate.query(READ_ALL_SQL, getRowMapper());
     }
 
     private void update(UnittypeParameter unittypeParameter) {

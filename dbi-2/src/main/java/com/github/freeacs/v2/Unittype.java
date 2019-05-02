@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.Wither;
 
+import java.util.List;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @Data
@@ -18,4 +20,5 @@ public class Unittype {
     String name;
     String description;
     Protocol protocol;
+    List<UnittypeParameter> unittypeParameters;
 }

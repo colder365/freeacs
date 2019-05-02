@@ -42,18 +42,13 @@ public class UnittypeParameterDaoTest {
         unittypeParameter = unittypeParameter.withFlag("RA");
         unittypeParameter = unittypeParameterDao.addOrChange(unittypeParameter);
         assertEquals(unittypeParameter.withFlag("RA"), unittypeParameter);
-        assertEquals(Collections.singletonList(unittypeParameter), unittypeParameterDao.readAll(unittypeParameter.getUnittypeId()));
-        unittypeParameterDao.deleteAll(unittypeParameter.getUnittypeId());
-        assertEquals(Collections.emptyList(), unittypeParameterDao.readAll(unittypeParameter.getUnittypeId()));
+        assertEquals(Collections.singletonList(unittypeParameter), unittypeParameterDao.readAll());
+        unittypeParameterDao.delete(unittypeParameter.getUnittypeId());
+        assertEquals(Collections.emptyList(), unittypeParameterDao.readAll());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void failsWhenDeletingUnittypeWithNoId() {
-        unittypeParameterDao.deleteAll(null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void failsWhenSupplyingNulltoReadUnittype() {
-        unittypeParameterDao.readAll(null);
+        unittypeParameterDao.delete(null);
     }
 }
