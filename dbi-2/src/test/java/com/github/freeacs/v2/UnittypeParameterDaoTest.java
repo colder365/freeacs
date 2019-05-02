@@ -8,7 +8,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -43,21 +42,18 @@ public class UnittypeParameterDaoTest {
         unittypeParameter = unittypeParameter.withFlag("RA");
         unittypeParameter = unittypeParameterDao.addOrChange(unittypeParameter);
         assertEquals(unittypeParameter.withFlag("RA"), unittypeParameter);
-        assertEquals(Collections.singletonList(1L), unittypeParameterDao.readAllKeys());
-        assertEquals(Collections.singletonList(unittypeParameter), unittypeParameterDao.readAll());
-        assertEquals(Optional.of(unittypeParameter), unittypeParameterDao.read(unittypeParameter.getId()));
-        unittypeParameterDao.delete(unittypeParameter);
-        assertEquals(Collections.emptyList(), unittypeParameterDao.readAllKeys());
-        assertEquals(Collections.emptyList(), unittypeParameterDao.readAll());
+        assertEquals(Collections.singletonList(unittypeParameter), unittypeParameterDao.readAll(unittypeParameter.getUnittypeId()));
+        unittypeParameterDao.deleteAll(unittypeParameter.getUnittypeId());
+        assertEquals(Collections.emptyList(), unittypeParameterDao.readAll(unittypeParameter.getUnittypeId()));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void failsWhenDeletingUnittypeWithNoId() {
-        unittypeParameterDao.delete(UnittypeParameter.builder().build());
+        unittypeParameterDao.deleteAll(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void failsWhenSupplyingNulltoReadUnittype() {
-        unittypeParameterDao.read(null);
+        unittypeParameterDao.readAll(null);
     }
 }
